@@ -1,13 +1,11 @@
 import React, { useState } from "react";
 import './App.scss';
 import { PostList } from "./components/PostList";
-import { PrimaryButton } from "./components/UI/buttons/PrimaryButton";
+import { PostForm } from "./components/PostForm";
+import { PrimarySelect } from "./components/UI/Option/PrimarySelect";
 import { PrimaryInput } from "./components/UI/input";
 
-
-
-function App() {
-const postsFromDatabase = [
+export const postsFromDatabase = [
   {
     id: 1,
     title: 'JavaScript',
@@ -16,62 +14,85 @@ const postsFromDatabase = [
   {
     id: 2,
     title: 'Python',
-    body: 'Python is pease of the bullshit'
+    body: 'Shit'
   },
   {
     id: 3,
     title: 'C#',
-    body: 'C# is pease of the bullshit'
+    body: 'Unity Shit'
   },
   {
     id: 4,
     title: 'C++',
-    body: 'C++ is pease of the bullshit'
+    body: 'Unreal Shit'
   },
   {
     id: 5,
     title: 'Go',
-    body: 'Go is pease of the bullshit'
+    body: 'Backend Shit'
   },
   {
     id: 6,
     title: 'Ruby',
-    body: 'Ruby is pease of the bullshit'
+    body: 'Old shit'
   },
 ];
 
+function App() {
   const [posts, setPosts] = useState(postsFromDatabase);
-  const [post, setPost] = useState({title: '', body: ''});
-  
-  const addNewPost = (e) => {
-    e.preventDefault();
+  const [selectedSort, setSelectedSort] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
 
-    setPosts([...posts, {...post, id: Date.now()}]);
-    setPost({title: '', body: ''})
+  const createPost = (newPost) => {
+    setPosts([...posts, newPost])
   }
 
+  const removePost = (post) => {
+    setPosts(posts.filter(p => p.id !== post.id))
+  }
+
+  const sortPosts = (sort) => {
+    setSelectedSort(sort);
+    setPosts([...posts].sort((a, b) => (
+     a[sort].localeCompare(b[sort])
+    )))
+  }
 
   return (
     <div className="App">
-      <form>
-        <PrimaryInput
-          type="text"
-          placeholder="Post Name"
-          value={post.title}
-          onChange={e => setPost({...post, title: e.target.value})}
+      <div className="text-primary">awdad</div>
+      <PostForm create={createPost}/>
+      <hr style={{ margin: '15px'}}/>
+
+      <div>
+        <PrimaryInput placeholder='Search'/>
+        <PrimarySelect 
+          value={selectedSort}
+          defaultValue="Sort"
+          options={[
+            {
+              value: 'title',
+              name: 'By name'
+            },
+            {
+              value: 'body',
+              name: 'By description'
+            },
+          ]}
+          onChange={sortPosts}
         />
+      </div>
 
-        <PrimaryInput
-          type="text"
-          placeholder="Post Description"
-          value={post.body}
-          onChange={e => setPost({...post, body: e.target.value})}
+      {posts.length
+        ?
+        <PostList
+          remove={removePost}
+          posts={posts}
+          title={"Post List"}
         />
-
-        <PrimaryButton onClick={addNewPost}>Create</PrimaryButton>
-      </form>
-
-      <PostList posts={posts} title={"Post List"} />
+        :
+        <h1 style={{textAlign: 'center'}}>Empty</h1>
+        }
     </div>
   );
 }

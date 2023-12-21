@@ -1,16 +1,20 @@
 import React from "react";
 
+import { PrimaryButton } from "../UI/buttons/PrimaryButton";
+
 export const PostItem = (props) => {
+  const {post, remove} = props;
+
 	return (
 		<div className="post">
         <div className="post__content">
-          <strong>{props.post.id}. {props.post.title}</strong>
+          <strong>{post.id}. {props.post.title}</strong>
           <div>
-            {props.post.body}
+            {post.body}
           </div>
         </div>
         <div className="post__button">
-          <button>Delete</button>
+          <PrimaryButton onClick={() => remove(post)}>Delete</PrimaryButton>
         </div>
       </div>
 	)
