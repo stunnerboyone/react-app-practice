@@ -10,6 +10,7 @@ export const PrimarySelect = ({
 		<select 
 			value={value}
 			onChange={event => onChange(event.target.value)}
+			className='border border-green-600 rounded-lg text-center'
 		>
 			<option disabled value=''>{defaultValue}</option>
 			{options.map(option => (

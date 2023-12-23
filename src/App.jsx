@@ -59,28 +59,29 @@ function App() {
   }
 
   return (
-    <div className="App mx-auto my-5 px-32">
+    <div className="App mx-auto my-5 px-10 items-center">
       <PostForm create={createPost}/>
 
-      <hr style={{ margin: '15px'}}/>
+      <div className="flex flex-col max-w-96">
+        <PrimaryInput placeholder='Search' />
 
-      <PrimaryInput placeholder='Search' />
+        <PrimarySelect 
+          value={selectedSort}
+          defaultValue="Sort"
+          options={[
+            {
+              value: 'title',
+              name: 'By name'
+            },
+            {
+              value: 'body',
+              name: 'By description'
+            },
+          ]}
+          onChange={sortPosts}
+        />
+      </div>
 
-      <PrimarySelect 
-        value={selectedSort}
-        defaultValue="Sort"
-        options={[
-          {
-            value: 'title',
-            name: 'By name'
-          },
-          {
-            value: 'body',
-            name: 'By description'
-          },
-        ]}
-        onChange={sortPosts}
-      />
 
       {posts.length
         ?

@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { PrimaryInput } from "../UI/input";
 import { PrimaryButton } from "../UI/buttons/PrimaryButton";
 
+import classes from './PostForm.module.scss';
+
 export const defaultPost = {
 	title: '',
 	body: '',
@@ -25,22 +27,22 @@ export const PostForm = ({ create }) => {
 
 
 	return (
-		<form>
-        <PrimaryInput
-          type="text"
-          placeholder="Post Name"
-          value={post.title}
-          onChange={e => setPost({...post, title: e.target.value})}
-        />
+		<form className={classes.form}>
+      <PrimaryInput
+        type="text"
+        placeholder="Post Name"
+        value={post.title}
+        onChange={e => setPost({...post, title: e.target.value})}
+      />
 
-        <PrimaryInput
-          type="text"
-          placeholder="Post Description"
-          value={post.body}
-          onChange={e => setPost({...post, body: e.target.value})}
-        />
+      <PrimaryInput
+        type="text"
+        placeholder="Post Description"
+        value={post.body}
+        onChange={e => setPost({...post, body: e.target.value})}
+      />
 
-        <PrimaryButton onClick={addNewPost}>Create</PrimaryButton>
-      </form>
+      <PrimaryButton onClick={addNewPost}>Create</PrimaryButton>
+    </form>
 	);
 }
