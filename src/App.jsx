@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import './App.scss';
 import { PostList } from "./components/PostList";
 import { PostForm } from "./components/PostForm";
+import { PostFilter } from "./components/PostFilter";
+
 import { PrimarySelect } from "./components/UI/Option/PrimarySelect";
 import { PrimaryInput } from "./components/UI/input";
 
@@ -40,8 +42,21 @@ export const postsFromDatabase = [
 
 function App() {
   const [posts, setPosts] = useState(postsFromDatabase);
-  const [selectedSort, setSelectedSort] = useState('');
-  const [searchQuery, setSearchQuery] = useState('');
+  const [filter, setFilter] = useState({
+    sort: '',
+    query: '',
+  })
+
+  const sortedPosts = useMemo(() => {
+    if (filter.sort) {
+      return [...posts].sort((a, b) => (a[filter.sort].localeCompare(b[filter.sort])))
+    } else 
+      return posts
+  }, [filter.sort, posts]);
+
+  const searchedPosts = useMemo(() => {
+    return sortedPosts.filter(post => post.title.toLocaleLowerCase().includes(filter.query))
+  }, [filter.query, sortedPosts])
 
   const createPost = (newPost) => {
     setPosts([...posts, newPost])
@@ -51,48 +66,23 @@ function App() {
     setPosts(posts.filter(p => p.id !== post.id))
   }
 
-  const sortPosts = (sort) => {
-    setSelectedSort(sort);
-    setPosts([...posts].sort((a, b) => (
-     a[sort].localeCompare(b[sort])
-    )))
-  }
-
   return (
     <div className="App mx-auto my-5 px-10 items-center">
-      <PostForm create={createPost}/>
 
-      <div className="flex flex-col max-w-96">
-        <PrimaryInput placeholder='Search' />
+      <div className="inputs flex justify-between">
+        <PostForm create={createPost}/>
 
-        <PrimarySelect 
-          value={selectedSort}
-          defaultValue="Sort"
-          options={[
-            {
-              value: 'title',
-              name: 'By name'
-            },
-            {
-              value: 'body',
-              name: 'By description'
-            },
-          ]}
-          onChange={sortPosts}
+        <PostFilter
+          filter={filter}
+          setFilter={setFilter}
         />
       </div>
 
-
-      {posts.length
-        ?
         <PostList
           remove={removePost}
-          posts={posts}
+          posts={searchedPosts}
           title={"Post List"}
         />
-        :
-        <h1 style={{textAlign: 'center'}}>Empty</h1>
-        }
     </div>
   );
 }
