@@ -3,6 +3,6 @@ import classes from './PrimaryInput.module.scss';
 
 export const PrimaryInput = (props) => {
 	return (
-		<input className={classes.input} {...props}/>
+		<input className={classes.input} {...props} />
 	)
 }
