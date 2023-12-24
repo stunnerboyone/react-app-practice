@@ -1,0 +1,25 @@
+.modal {
+	@apply
+		fixed
+		top-0
+		bottom-0
+		right-0
+		left-0
+		hidden
+		bg-slate-600
+		bg-opacity-80
+}
+
+.modalActive {
+	@apply 
+		flex 
+		justify-center 
+		items-center
+}
+
+.modalContent {
+	@apply 
+		p-11 
+		bg-green-100
+		rounded-3xl
+}

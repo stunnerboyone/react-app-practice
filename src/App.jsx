@@ -3,9 +3,8 @@ import './App.scss';
 import { PostList } from "./components/PostList";
 import { PostForm } from "./components/PostForm";
 import { PostFilter } from "./components/PostFilter";
-
-import { PrimarySelect } from "./components/UI/Option/PrimarySelect";
-import { PrimaryInput } from "./components/UI/input";
+import { ModalForm } from "./components/UI/Modals/ModalForm/ModalForm";
+import { PrimaryButton } from "./components/UI/buttons/PrimaryButton";
 
 export const postsFromDatabase = [
   {
@@ -46,6 +45,7 @@ function App() {
     sort: '',
     query: '',
   })
+  const [modal, setModal] = useState(false);
 
   const sortedPosts = useMemo(() => {
     if (filter.sort) {
@@ -60,6 +60,7 @@ function App() {
 
   const createPost = (newPost) => {
     setPosts([...posts, newPost])
+    setModal(false);
   }
 
   const removePost = (post) => {
@@ -68,9 +69,14 @@ function App() {
 
   return (
     <div className="App mx-auto my-5 px-10 items-center">
-
-      <div className="inputs flex justify-between">
+      <ModalForm visible={modal} setVisible={setModal}>
         <PostForm create={createPost}/>
+      </ModalForm>
+
+      <div className="flex justify-between items-end">
+        <PrimaryButton onClick={() => setModal(true)}>
+          Create New Post
+        </PrimaryButton>
 
         <PostFilter
           filter={filter}

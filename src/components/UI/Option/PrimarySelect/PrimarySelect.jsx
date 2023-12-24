@@ -1,5 +1,7 @@
 import React from 'react';
 
+import classes from './PrimarySelect.module.scss'
+
 export const PrimarySelect = ({
 	options,
 	defaultValue,
@@ -10,7 +12,7 @@ export const PrimarySelect = ({
 		<select 
 			value={value}
 			onChange={event => onChange(event.target.value)}
-			className='border border-green-600 rounded-lg text-center'
+			className={classes.select}
 		>
 			<option disabled value=''>{defaultValue}</option>
 			{options.map(option => (
